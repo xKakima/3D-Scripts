@@ -77,7 +77,7 @@ done_background_color = (0, 1, 0)  # Green color (RGB)
 
 window_name = "ApexOverseer"
 
-character_mesh_path = "D:/Dev-Projects/Character_Mesh.fbx"  # Update this to your actual file path
+character_mesh_path = r"\\192.168.8.90\Apex Environment\Documentation\Guidelines\Character Reference\Female_Character.obj"  # Update this to your actual file path
 character_mesh_name = "scale_ref_human"  # Update this to your expected node name in Maya
 
 
@@ -120,22 +120,15 @@ def clean_hypershade():
 
 # region Character Mesh
 def import_fbx(character_mesh_path):
-    # Get the list of nodes before import
-    nodes_before_import = set(cmds.ls())
-
-    # Import the FBX file
-    cmds.FBXImport('-file', character_mesh_path)
-    print("FBX Import completed.")
-
-    # Get the list of nodes after import
-    nodes_after_import = set(cmds.ls())
-
-    # Determine the newly created nodes
-    imported_nodes = nodes_after_import - nodes_before_import
-
-    # Print the imported nodes
-    print("Imported nodes:", imported_nodes)
-    
+    if os.path.exists(character_mesh_path) and os.access(character_mesh_path, os.R_OK):
+        print(f"File found: {character_mesh_path}")
+        
+        # Proceed with importing the OBJ file in Maya
+        cmds.file(character_mesh_path, i=True, type="OBJ", ignoreVersion=True, options="mo=1", pr=True)
+        print("OBJ Import completed.")
+    else:
+        print(f"File not found or cannot be accessed: {character_mesh_path}")
+        
 def import_character_mesh():
     print(f"Importing {character_mesh_name}...")
     # Ensure the FBX plugin is loaded
