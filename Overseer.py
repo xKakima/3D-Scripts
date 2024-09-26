@@ -70,6 +70,7 @@ def create_shelf_button():
             print(f"Error: {script_path} : {e.strerror}")
     script = """import maya.cmds as cmds
 import maya.mel as mel
+import os
 
 warning_background_color = (1, 0, 0)  # Red color (RGB)
 done_background_color = (0, 1, 0)  # Green color (RGB)
