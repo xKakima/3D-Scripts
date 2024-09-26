@@ -137,7 +137,7 @@ def import_fbx(character_mesh_path):
     print("Imported nodes:", imported_nodes)
     
 def import_character_mesh():
-    print("Importing character mesh...")
+    print(f"Importing {character_mesh_name}...")
     # Ensure the FBX plugin is loaded
     if not cmds.pluginInfo("fbxmaya", query=True, loaded=True):
         cmds.loadPlugin("fbxmaya")
@@ -154,7 +154,7 @@ def import_character_mesh():
 def check_character_mesh():
     outliner_objects = cmds.ls(assemblies=True)
     character_meshes = [obj for obj in outliner_objects if character_mesh_name in obj]
-    print("Found character meshes:", character_meshes)
+    print(f"Found {character_mesh_name} meshes:", character_meshes)
     if len(character_meshes) >= 1:
         return True
     else:
