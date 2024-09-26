@@ -61,6 +61,13 @@ def create_shelf_button():
         os.makedirs(scripts_folder)
         
     script_path = os.path.join(scripts_folder, 'apex_overseer.py')
+    if os.path.exists(script_path):
+        try:
+        # Delete the file
+            os.remove(script_path)
+            print(f"File {script_path} deleted successfully.")
+        except OSError as e:
+            print(f"Error: {script_path} : {e.strerror}")
     script = """import maya.cmds as cmds
 import maya.mel as mel
 
@@ -71,7 +78,7 @@ done_background_color = (0, 1, 0)  # Green color (RGB)
 window_name = "ApexOverseer"
 
 character_mesh_path = "D:/Dev-Projects/Character_Mesh.fbx"  # Update this to your actual file path
-character_mesh_name = "Character_Mesh"  # Update this to your expected node name in Maya
+character_mesh_name = "scale_ref_human"  # Update this to your expected node name in Maya
 
 
 # region Layers
@@ -113,8 +120,21 @@ def clean_hypershade():
 
 # region Character Mesh
 def import_fbx(character_mesh_path):
+    # Get the list of nodes before import
+    nodes_before_import = set(cmds.ls())
+
+    # Import the FBX file
     cmds.FBXImport('-file', character_mesh_path)
     print("FBX Import completed.")
+
+    # Get the list of nodes after import
+    nodes_after_import = set(cmds.ls())
+
+    # Determine the newly created nodes
+    imported_nodes = nodes_after_import - nodes_before_import
+
+    # Print the imported nodes
+    print("Imported nodes:", imported_nodes)
     
 def import_character_mesh():
     print("Importing character mesh...")
