@@ -169,9 +169,13 @@ def create_character_mesh_button():
 
 # region Proxy Mesh
 def check_proxy_mesh():
-    outliner_objects = cmds.ls(assemblies=True)
-    proxy_objects = [obj for obj in outliner_objects if '_proxy' in obj]
+    # List all nodes in the scene, including those inside groups
+    all_objects = cmds.ls(dag=True, long=True)  # dag=True will list all DAG nodes, long=True returns full paths
+    
+    # Filter objects that contain '_proxy' in their name
+    proxy_objects = [obj for obj in all_objects if '_proxy' in obj]
     print("Found proxy objects:", proxy_objects)
+    
     if len(proxy_objects) >= 1:
         return True
     else:
